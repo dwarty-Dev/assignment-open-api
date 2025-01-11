@@ -56,4 +56,11 @@ export class NetflixService {
       throw new HttpException(
         {
           status: error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR,
-          message: error.response?.data?.message || 'Failed 
+          message: error.response?.data?.message || 'Failed to fetch categories. Please try again later!',
+          details: error.response?.data || null,
+        },
+        error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+}
