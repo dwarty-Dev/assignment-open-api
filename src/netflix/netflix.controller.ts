@@ -5,7 +5,8 @@ import { NetflixService } from './netflix.service';
 export class NetflixController {
   constructor(private readonly moviesService: NetflixService) {}
 
-  @Get('movies')  // this sets the endpoint '/netflix/movies'
+  // Existing route to fetch movies by genre
+  @Get('movies')
   async getMoviesByGenre(@Query('genre') genre: string) {
     if (!genre) {
       return {
@@ -14,5 +15,18 @@ export class NetflixController {
       };
     }
     return this.moviesService.getMoviesByGenre(genre);
+  }
+
+  // New route to fetch categories
+  @Get('categories')
+  async getCategories() {
+    try {
+      return await this.moviesService.getCategories();
+    } catch (error) {
+      return {
+        status: 500,
+        message: 'Failed to fetch categories',
+      };
+    }
   }
 }
