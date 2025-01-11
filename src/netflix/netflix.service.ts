@@ -14,14 +14,23 @@ export class NetflixService {
         },
         params: { genre },
       });
-      return response.data;
+
+      return {
+        status: 200,
+        message: `Successfully fetched movies for genre: ${genre}. Enjoy your binge! 🎉`,
+        data: response.data,
+      };
     } catch (error) {
       console.error('Error fetching movies by genre:', error.response?.data || error.message);
+
       throw new HttpException(
-        error.response?.data?.message || 'Failed to fetch movies by genre',
+        {
+          status: error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.response?.data?.message || 'Failed to fetch movies by genre. Please try again later!',
+          details: error.response?.data || null,
+        },
         error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
-  
 }
